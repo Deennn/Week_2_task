@@ -11,7 +11,7 @@ import java.util.Map;
 public class CustomerOperationsImpl implements CustomerOperations{
 
     @Override
-    public Map<Product, Integer> buyProduct(Customer customer, Store store, Product product, int quantityWanted, double wallet) throws ProductOutOfStockException, ProductNotInStockException {
+    public Map<Product, Integer> buyProduct(Customer customer, Store store, Product product, int quantityWanted) throws ProductOutOfStockException, ProductNotInStockException {
          Map<Product, Integer> map = store.getProductMap();
 
              if (map.containsKey(product) && map.get(product) >= quantityWanted) {

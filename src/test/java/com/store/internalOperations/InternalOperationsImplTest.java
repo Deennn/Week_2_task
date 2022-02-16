@@ -83,7 +83,7 @@ class InternalOperationsImplTest {
     @Test
     void shouldCheckIfTheTotalAmountIsEqualToProductPrice() throws StaffNotAuthorizedException, InsufficientFundException, ProductOutOfStockException, ProductNotInStockException {
         internalOperations.addProductToStore(manager, store, product, 12);
-        customerOperations.buyProduct(customer,store,product,12,2000.00);
+        customerOperations.buyProduct(customer,store,product,12);
 
         internalOperations.sellProducts(cashier, store, customer);
 
@@ -92,6 +92,16 @@ class InternalOperationsImplTest {
     }
 
     @Test
-    void printReceipt() {
+    void shouldCheckIfCustomerHasEnoughFund() throws StaffNotAuthorizedException, InsufficientFundException, ProductOutOfStockException, ProductNotInStockException {
+
+        customer.setWallet(20);
+        internalOperations.addProductToStore(manager, store, product, 12);
+        customerOperations.buyProduct(customer,store,product,12);
+
+
+
+
+        Assertions.assertThrows(InsufficientFundException.class, () ->internalOperations.sellProducts(cashier, store, customer));
     }
+
 }

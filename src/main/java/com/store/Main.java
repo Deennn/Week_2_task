@@ -37,10 +37,10 @@ public class Main {
         internalOperations.addProductToStore(manager,store,product1,11);
         internalOperations.addProductToStore(manager,store,product2,12);
         System.out.println(store.getProductMap());
-        customerOperations.buyProduct(customer,store,product2,12,1000);
-        customerOperations.buyProduct(customer,store,product1,1,1000);
-        customerOperations.buyProduct(customer,store,product1,21,1000);
-        customerOperations.buyProduct(customer,store,product,25,100);
+        customerOperations.buyProduct(customer,store,product2,12);
+        customerOperations.buyProduct(customer,store,product1,1);
+        customerOperations.buyProduct(customer,store,product1,21);
+        customerOperations.buyProduct(customer,store,product,25);
         internalOperations.sellProducts(cashier,store,customer);
 //        application.apply(applicant,store);
 //        recruitment.hire(applicant,manager,store);
