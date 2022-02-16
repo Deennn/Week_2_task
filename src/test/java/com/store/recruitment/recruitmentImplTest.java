@@ -55,7 +55,6 @@ class recruitmentImplTest {
         assertEquals(0,drogoStores.getApplicants().size());
     }
     @Test
-//    DisplayName()
     void shouldCheckIfApplicantIsBeenConvertedToStaff() throws StaffNotAuthorizedException, ApplicantsAlreadyAppliedException, OverStaffedException {
         Applicant lawal = new Applicant("Deenn","Lawal","a@gmail.com", "Tech", Gender.FEMALE, Qualification.BSC, Role.CASHIER);
         application.apply(lawal, drogoStores);
