@@ -28,18 +28,18 @@ class CustomerOperationsImplTest {
     CustomerOperationsImpl customerOperations = new CustomerOperationsImpl();
 
     @Test
-    void buyProduct() throws StaffNotAuthorizedException {
+    void shouldCheckProductExistInStore() throws StaffNotAuthorizedException {
         internalOperations.addProductToStore(manager,store,product,20);
         Assertions.assertThrows(ProductNotInStockException.class, ()-> customerOperations.buyProduct(customer,store,product1,25));
     }
 
     @Test
-    void buyProduct1() throws StaffNotAuthorizedException {
+    void shouldCheckIfTheProductIsOutOfStock() throws StaffNotAuthorizedException {
         internalOperations.addProductToStore(manager,store,product,20);
         Assertions.assertThrows(ProductOutOfStockException.class, ()-> customerOperations.buyProduct(customer,store,product,21));
     }
     @Test
-    void buyProduct2() throws StaffNotAuthorizedException, ProductOutOfStockException, ProductNotInStockException {
+    void ShouldCheckTheQuantityOfProductAddToCart() throws StaffNotAuthorizedException, ProductOutOfStockException, ProductNotInStockException {
         internalOperations.addProductToStore(manager,store,product,20);
         internalOperations.addProductToStore(manager,store,product,5);
         customerOperations.buyProduct(customer,store,product,20);
@@ -47,7 +47,7 @@ class CustomerOperationsImplTest {
     }
 
     @Test
-    void buyProduct4() throws StaffNotAuthorizedException, ProductOutOfStockException, ProductNotInStockException {
+    void ShouldCheckProductOutOfStockException() throws StaffNotAuthorizedException, ProductOutOfStockException, ProductNotInStockException {
         internalOperations.addProductToStore(manager,store,product,20);
         customerOperations.buyProduct(customer,store,product,15);
         Assertions.assertThrows(ProductOutOfStockException.class, ()->customerOperations.buyProduct(customer,store,product,21));
@@ -55,18 +55,18 @@ class CustomerOperationsImplTest {
     }
 
     @Test
-    void buyProduct3() throws StaffNotAuthorizedException, ProductOutOfStockException, ProductNotInStockException {
+    void ShouldCheckTheQuantityOfProductWhenTwoProductsAreAdded() throws StaffNotAuthorizedException, ProductOutOfStockException, ProductNotInStockException {
         internalOperations.addProductToStore(manager,store,product,45);
         customerOperations.buyProduct(customer,store,product,20);
         customerOperations.buyProduct(customer,store,product,20);
         Assertions.assertEquals(40,customer.getCartMap().get(product));
     }
 
-    @Test
-    void buyProduct5() throws StaffNotAuthorizedException, ProductOutOfStockException, ProductNotInStockException {
-        internalOperations.addProductToStore(manager,store,product,20);
-        customerOperations.buyProduct(customer,store,product,15);
-        Assertions.assertThrows(ProductOutOfStockException.class, ()->customerOperations.buyProduct(customer,store,product,21));
-
-    }
+//    @Test
+//    void buyProduct5() throws StaffNotAuthorizedException, ProductOutOfStockException, ProductNotInStockException {
+//        internalOperations.addProductToStore(manager,store,product,20);
+//        customerOperations.buyProduct(customer,store,product,15);
+//        Assertions.assertThrows(ProductOutOfStockException.class, ()->customerOperations.buyProduct(customer,store,product,21));
+//
+//    }
 }

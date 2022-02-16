@@ -63,14 +63,7 @@ class recruitmentImplTest {
         recruit. convertApplicantToStaffAndAddToCompany(drogoStores,lawal);
         assertEquals(drogoStores.getStaffs().get(0).getEmail(), lawal.getEmail());
     }
-    @Test
-    void shouldCheckIfApplicantIsBeenConvertedToStoreStaff() throws StaffNotAuthorizedException, ApplicantsAlreadyAppliedException, OverStaffedException {
-        Applicant lawal = new Applicant("Deenn","Lawal","a@gmail.com", "Tech", Gender.FEMALE, Qualification.BSC, Role.CASHIER);
-        application.apply(lawal, drogoStores);
-        recruit.hire(lawal,manager,drogoStores);
-        recruit. convertApplicantToStaffAndAddToCompany(drogoStores,lawal);
-        assertTrue(!drogoStores.getStaffs().contains(lawal));
-    }
+
     @Test
     void shouldCheckIfOverStaffed() throws ApplicantsAlreadyAppliedException, OverStaffedException, StaffNotAuthorizedException {
 
