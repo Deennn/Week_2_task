@@ -8,6 +8,8 @@ import com.store.models.Staff;
 import com.store.models.Store;
 import com.store.models.Product;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import static com.store.enums.Role.CASHIER;
@@ -69,9 +71,35 @@ public class InternalOperationsImpl implements InternalOperations{
                 customer.setWallet(customerWallet);
                 storeAccount += totalAmount;
                 store.setStoreAccount(storeAccount);
+                removeBoughtProducts(customer,store);
                 System.out.println(printReceipt(store,customer,totalAmount));;
         }
         map.clear();
+
+    }
+
+    private void removeBoughtProducts(Customer customer,Store store) {
+
+        List<Product> productToRemoveFromStore = new ArrayList<>();
+
+        for (Map.Entry<Product, Integer> productsPairsBoughtByCustomer : customer.getCartMap().entrySet()) {
+            String nameOfItem =  productsPairsBoughtByCustomer.getKey().getProductName();
+            int itemUnit = productsPairsBoughtByCustomer.getValue();
+
+            for (Map.Entry<Product, Integer> productsPairsInStore : store.getProductMap().entrySet()) {
+                if (productsPairsInStore.getKey().getProductName().equals(nameOfItem)) {
+                    productsPairsInStore.setValue(productsPairsInStore.getValue()-itemUnit);
+                }
+
+                if (productsPairsInStore.getValue() == 0) {
+                    productToRemoveFromStore.add(productsPairsInStore.getKey());
+                }
+            }
+        }
+
+        for (Product EachProductAndItsUnit : productToRemoveFromStore) {
+            store.getProductMap().remove(EachProductAndItsUnit);
+        }
 
     }
 
@@ -90,7 +118,7 @@ public class InternalOperationsImpl implements InternalOperations{
         }
         receipt += "Total Price: "+totalAmount+"\n" +
                 "Amount paid: " + totalAmount + "\n" +
-                "Buyer: " + customer.getFirstName();
+                "Buyer: " + customer.getFirstName() + " " + customer.getLastName();
 
 
         return receipt;

@@ -36,10 +36,11 @@ public class Main {
         internalOperations.addProductToStore(manager,store,product,5);
         internalOperations.addProductToStore(manager,store,product1,11);
         internalOperations.addProductToStore(manager,store,product2,12);
-        customerOperations.buyProduct(customer,store,product2,10,1000);
+        System.out.println(store.getProductMap());
+        customerOperations.buyProduct(customer,store,product2,12,1000);
         customerOperations.buyProduct(customer,store,product1,1,1000);
-        customerOperations.buyProduct(customer,store,product1,11,1000);
-        customerOperations.buyProduct(customer,store,product,6,100);
+        customerOperations.buyProduct(customer,store,product1,21,1000);
+        customerOperations.buyProduct(customer,store,product,25,100);
         internalOperations.sellProducts(cashier,store,customer);
 //        application.apply(applicant,store);
 //        recruitment.hire(applicant,manager,store);
@@ -49,8 +50,9 @@ public class Main {
 
 
 //        System.out.println(product);
-//        System.out.println(store.getProductMap());
-//        System.out.println(customer.getCartMap());
+        System.out.println(store.getProductMap());
+        System.out.println(customer.getCartMap());
+
 //
 //        Applicant applicant = new Applicant("deenn","lawal","aaa","sdhd", Gender.FEMALE, Qualification.BSC, Role.CASHIER);
 //        System.out.println(store.getProductMap());
