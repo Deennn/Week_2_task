@@ -15,7 +15,7 @@ public class Customer extends Person {
 
     public Customer(String firstName, String lastName, String email, String address, Gender gender, double wallet, int quantityWanted) {
         super(firstName, lastName, email, address, gender);
-        this.wallet = 0;
+        this.wallet = wallet;
         this.quantityWanted = quantityWanted;
         this.cartMap = new HashMap<>();
     }

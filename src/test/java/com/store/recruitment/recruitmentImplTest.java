@@ -14,6 +14,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.Objects;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class recruitmentImplTest {
@@ -59,7 +61,7 @@ class recruitmentImplTest {
         application.apply(lawal, drogoStores);
         recruit.hire(lawal,manager,drogoStores);
         recruit. convertApplicantToStaffAndAddToCompany(drogoStores,lawal);
-        assertTrue(drogoStores.getStaffs().get(0).getEmail() == lawal.getEmail());
+        assertEquals(drogoStores.getStaffs().get(0).getEmail(), lawal.getEmail());
     }
     @Test
     void shouldCheckIfApplicantIsBeenConvertedToStoreStaff() throws StaffNotAuthorizedException, ApplicantsAlreadyAppliedException, OverStaffedException {

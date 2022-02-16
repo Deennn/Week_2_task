@@ -4,8 +4,10 @@ import com.store.enums.Gender;
 import com.store.enums.Qualification;
 import com.store.enums.Role;
 import com.store.exceptions.ApplicantsAlreadyAppliedException;
+import com.store.exceptions.StaffNotAuthorizedException;
 import com.store.models.Applicant;
 import com.store.models.Store;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -32,13 +34,14 @@ class ApplicationImplTest {
         application.apply(sol, drogoStores);
         assertTrue(drogoStores.getApplicants().contains(sol));
     }
+    @Test
     void shouldThrowException() throws ApplicantsAlreadyAppliedException {
 
         Applicant lawal = new Applicant("Lawal","Lawal","a@gmail.com", "Tech", Gender.MALE, Qualification.BSC, Role.CASHIER);
         application.apply(lawal, drogoStores);
         Applicant lawal1= new Applicant("lawal","Lawal","a@gmail.com", "Tech", Gender.MALE, Qualification.BSC, Role.CASHIER);
-        application.apply(lawal, drogoStores);
-//        assertThrows();
+
+        Assertions.assertThrows(ApplicantsAlreadyAppliedException.class, ()-> application.apply(lawal, drogoStores));
 
 
     }

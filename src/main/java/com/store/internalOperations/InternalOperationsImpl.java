@@ -17,7 +17,7 @@ public class InternalOperationsImpl implements InternalOperations{
 
 
     @Override
-    public void addToStore(Staff admin, Store store, Product product, int quantityToBeAddedStore) throws StaffNotAuthorizedException {
+    public void addProductToStore(Staff admin, Store store, Product product, int quantityToBeAddedStore) throws StaffNotAuthorizedException {
 
         if (admin.getRole().equals(MANAGER)) {
                 if (store.getProductMap().containsKey(product)) {
@@ -35,7 +35,7 @@ public class InternalOperationsImpl implements InternalOperations{
     }
 
     @Override
-    public void sellProduct(Staff staff, Store store, Customer customer) throws InsufficientFundException, StaffNotAuthorizedException {
+    public void sellProducts(Staff staff, Store store, Customer customer) throws InsufficientFundException, StaffNotAuthorizedException {
         Map<Product,Integer> map = customer.getCartMap();
         double customerWallet =  customer.getWallet();
         double storeAccount = store.getStoreAccount();
@@ -50,9 +50,9 @@ public class InternalOperationsImpl implements InternalOperations{
                 int  productQuantity = entry.getValue();
 
                 totalAmountPerProduct = productPrice * productQuantity;
-
-
-                System.out.println(totalAmountPerProduct);
+//                System.out.println(customer.getWallet());
+//                System.out.println(customerWallet);
+//                System.out.println(totalAmountPerProduct);
                 totalAmount += totalAmountPerProduct;
 
 
@@ -64,9 +64,39 @@ public class InternalOperationsImpl implements InternalOperations{
             throw  new InsufficientFundException("Insufficient Funds");
         }
             else {
+
+                customerWallet -= totalAmount;
+                customer.setWallet(customerWallet);
                 storeAccount += totalAmount;
+                store.setStoreAccount(storeAccount);
+                System.out.println(printReceipt(store,customer,totalAmount));;
         }
         map.clear();
 
     }
+
+    @Override
+    public String printReceipt(Store store, Customer customer, double totalAmount) {
+        String receipt = "***** Thanks for patronizing " + store.getName() + " *****\n" +
+                "Transaction Details\n" +
+                "*******************************************\n";
+
+        for( Map.Entry<Product, Integer> each: customer.getCartMap().entrySet()){
+            receipt += "Product Name: "+ each.getKey().getProductName()+"\n" +
+                    "Price       : "+ each.getKey().getProductPrice()+"\n" +
+                    "Units       : "+ each.getValue()+"\n" +
+                    "Cost        : "+ (each.getKey().getProductPrice() * (double) each.getValue())+"\n" +
+                    "*******************************************\n";
+        }
+        receipt += "Total Price: "+totalAmount+"\n" +
+                "Amount paid: " + totalAmount + "\n" +
+                "Buyer: " + customer.getFirstName();
+
+
+        return receipt;
+
+
+    }
+
+
 }
