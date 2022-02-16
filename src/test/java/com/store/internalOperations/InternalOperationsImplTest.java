@@ -26,7 +26,7 @@ class InternalOperationsImplTest {
     Staff cashier;
     Customer customer;
 
-    InternalOperations internalOperations = new InternalOperationsImpl();
+    InternalOperations internalOperations;
     CustomerOperationsImpl customerOperations = new CustomerOperationsImpl();
 
     @BeforeEach
@@ -37,6 +37,7 @@ class InternalOperationsImplTest {
         product1 = new Product("Milk","Powder milk",Food,100.0);
         manager = new Staff(Role.MANAGER);
         cashier = new Staff(Role.CASHIER);
+        internalOperations = new InternalOperationsImpl();
 
         customer = new Customer("Deenn","lawal","a@gmail.com","edo", Gender.MALE,2000000.0,3);
 
@@ -83,13 +84,11 @@ class InternalOperationsImplTest {
     void shouldCheckIfTheTotalAmountIsEqualToProductPrice() throws StaffNotAuthorizedException, InsufficientFundException, ProductOutOfStockException, ProductNotInStockException {
         internalOperations.addProductToStore(manager, store, product, 12);
         customerOperations.buyProduct(customer,store,product,12,2000.00);
-        internalOperations.sellProducts(cashier, store, customer);
-        double total = 5;
-        for (Map.Entry<Product, Integer> entry : store.getProductMap().entrySet()) {
-            total += entry.getKey().getProductPrice();
-        }
 
-        Assertions.assertEquals(1200.0,total, 0.00);
+        internalOperations.sellProducts(cashier, store, customer);
+
+
+        Assertions.assertEquals(1200.0, internalOperations.getCustomerPrice());
     }
 
     @Test

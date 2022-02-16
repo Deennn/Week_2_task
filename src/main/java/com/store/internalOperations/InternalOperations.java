@@ -11,4 +11,5 @@ public interface InternalOperations {
     void addProductToStore(Staff admin, Store store, Product product, int quantityToBeAddedStore) throws StaffNotAuthorizedException;
     void sellProducts(Staff staff, Store store, Customer customer) throws InsufficientFundException, StaffNotAuthorizedException;
     String printReceipt(Store store, Customer customer,double totalAmount);
+    double getCustomerPrice();
 }

@@ -17,6 +17,7 @@ import static com.store.enums.Role.MANAGER;
 
 public class InternalOperationsImpl implements InternalOperations{
 
+private double customerPrice = 0;
 
     @Override
     public void addProductToStore(Staff admin, Store store, Product product, int quantityToBeAddedStore) throws StaffNotAuthorizedException {
@@ -56,7 +57,7 @@ public class InternalOperationsImpl implements InternalOperations{
 //                System.out.println(customerWallet);
 //                System.out.println(totalAmountPerProduct);
                 totalAmount += totalAmountPerProduct;
-
+                customerPrice = totalAmount;
 
             }
 
@@ -124,6 +125,10 @@ public class InternalOperationsImpl implements InternalOperations{
         return receipt;
 
 
+    }
+
+    public double getCustomerPrice() {
+        return customerPrice;
     }
 
 
