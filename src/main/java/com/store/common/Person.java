@@ -32,7 +32,7 @@ public abstract class Person {
     public String getLastName() {
         return lastName;
     }
-
+// Checking something
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
