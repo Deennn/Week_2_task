@@ -19,7 +19,7 @@ import java.util.Objects;
 import static org.junit.jupiter.api.Assertions.*;
 
 class recruitmentImplTest {
-    Store drogoStores = new Store("Drogo","Benin",0.00);
+    Store drogoStores = new Store("Drogo","Benin");
     Staff manager = new Staff(Role.MANAGER);
     Staff cahsier = new Staff(Role.CASHIER);
     recruitmentImpl recruit  = new recruitmentImpl();

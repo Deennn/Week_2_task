@@ -1,52 +1,56 @@
 package com.store.models;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 public class Store {
 
     private String name;
     private String address;
-    private double storeAccount;
+    private Account storeAccount;
+//    private double storeAccount;
     private List<Staff> staffs;
     private List<Applicant> applicants;
-    private Map<Product,Integer> productMap;
+    private Product[] productList = new Product[1];
 
-    public Store(String name, String address,double storeAccount) {
+    public Store(String name, String address) {
         this.name = name;
         this.address = address;
-        this.storeAccount = 0.00;
+//        this.storeAccount = new ;
+        this.storeAccount = new Account(this.name);
         this.staffs = new ArrayList<>();
         this.applicants = new ArrayList<>();
-        this.productMap = new HashMap<>();
+//        this.productList = new Product[0];
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+//    public void setName(String name) {
+//        this.name = name;
+//    }
 
     public String getAddress() {
         return address;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
+//    public void setAddress(String address) {
+//        this.address = address;
+//    }
 
-    public double getStoreAccount() {
+    public Account getStoreAccount() {
         return storeAccount;
     }
 
-    public void setStoreAccount(double storeAccount) {
-        this.storeAccount = storeAccount;
-    }
+//    public double getStoreAccount() {
+//        return storeAccount;
+//    }
+
+
+//    public void setStoreAccount(double storeAccount) {
+//        this.storeAccount = storeAccount;
+//    }
 
     public List<Staff> getStaffs() {
         return staffs;
@@ -58,10 +62,13 @@ public class Store {
     }
 
 
-    public Map<Product, Integer> getProductMap() {
-        return productMap;
+    public Product[] getProductList() {
+        return productList;
     }
 
+    public void setProductList(Product[] productList) {
+        this.productList = productList;
+    }
 
     @Override
     public String toString() {
@@ -71,7 +78,7 @@ public class Store {
                 ", storeAccount=" + storeAccount +
                 ", staffs=" + staffs +
                 ", applicants=" + applicants +
-                ", productList=" + productMap +
+                ", productList=" + Arrays.toString(productList) +
                 '}';
     }
 }

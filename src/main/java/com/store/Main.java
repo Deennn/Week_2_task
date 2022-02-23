@@ -14,16 +14,20 @@ import com.store.models.*;
 import com.store.recruitment.Recruitment;
 import com.store.recruitment.recruitmentImpl;
 
+import java.io.IOException;
+import java.util.Arrays;
+
 public class Main {
 
-   public static void main(String[] args) throws StaffNotAuthorizedException, ApplicantsAlreadyAppliedException, OverStaffedException, InsufficientFundException, ProductOutOfStockException, ProductNotInStockException {
+   public static void main(String[] args) throws StaffNotAuthorizedException, ApplicantsAlreadyAppliedException, OverStaffedException, InsufficientFundException, ProductOutOfStockException, ProductNotInStockException, IOException {
         Category FoodStuff = new Category("FoodStuff");
-        Product product = new Product("Milk", "powder milk",FoodStuff,1000);
-        Product product1 = new Product("Sugar","cube sugar",FoodStuff,10000);
-        Product product2 = new Product("Garri","Ijebu garri", FoodStuff,2000);
+//        Product milk = new Product("Milk", "powder milk",FoodStuff,1000,10);
+//        Product sugar = new Product("Sugar","cube sugar",FoodStuff,10000,14);
+//        Product garri = new Product("Garri","Ijebu garri", FoodStuff,2000,12);
         Applicant applicant = new Applicant("deee","sss","jdjd","dskdk",Gender.FEMALE,Qualification.BSC,Role.CASHIER);
-        Customer customer = new Customer("Deenn","lawal","a@gmail.com","edo",Gender.MALE,2000000.0,3);
-        Store store = new Store("drogo","tech park",0.00);
+        Customer sam= new Customer("Sam","Lawal","ade@gmail.com","Edo Park",Gender.MALE);
+//        Customer sam = new Customer("Sam","lawal","a@gmail.com","edo",Gender.MALE,20000.0,3);
+        Store store = new Store("drogo","tech park");
         Staff manager = new Staff(Role.MANAGER);
         Staff cashier = new Staff(Role.CASHIER);
 
@@ -31,17 +35,51 @@ public class Main {
         CustomerOperations customerOperations = new CustomerOperationsImpl();
         Application application = new ApplicationImpl();
         Recruitment recruitment = new recruitmentImpl();
-        internalOperations.addProductToStore(manager,store,product,20);
-        internalOperations.addProductToStore(manager,store,product1,11);
-        internalOperations.addProductToStore(manager,store,product,5);
-        internalOperations.addProductToStore(manager,store,product1,11);
-        internalOperations.addProductToStore(manager,store,product2,12);
-        System.out.println(store.getProductMap());
-        customerOperations.buyProduct(customer,store,product2,12);
-        customerOperations.buyProduct(customer,store,product1,1);
-        customerOperations.buyProduct(customer,store,product1,21);
-        customerOperations.buyProduct(customer,store,product,25);
-        internalOperations.sellProducts(cashier,store,customer);
+
+        application.apply(applicant, store);
+        recruitment.hire(applicant, manager, store);
+        System.out.println(store.getApplicants().size());
+        System.out.println(store.getStaffs().size());
+
+        Staff deee = store.getStaffs().get(0);
+        System.out.println(deee.getFirstName());
+
+        internalOperations.addProductToStore(manager,store);
+        System.out.println(Arrays.toString(store.getProductList()));
+//        customerOperations.buyProduct(sam,store,"garr",5);
+        customerOperations.loadCustomerAccount(sam,100000000);
+        customerOperations.addProductToCart(sam,store,"Bread",4);
+        customerOperations.addProductToCart(sam,store,"Garri",4);
+        customerOperations.addProductToCart(sam,store,"Garri",4);
+        customerOperations.addProductToCart(sam,store,"garri",10);
+        customerOperations.addProductToCart(sam,store,"milk",12);
+        System.out.println("sam's cart --> " +sam.getCartMap());
+        internalOperations.sellProducts(cashier,store,sam);
+        System.out.println();
+//        System.out.println(Arrays.toString(store.getProductList()));
+        System.out.println("sam's cart --> " +sam.getCartMap());
+//        System.out.println(store.getProductMap());
+
+//        customerOperations.buyProduct(sam,store,milk,12);
+//        customerOperations.buyProduct(sam,store,sugar,10);
+//        System.out.println(sam.getCartMap());
+
+//        internalOperations.sellProducts(deee,store,sam);
+//        System.out.println(store.getProductMap());
+
+//        System.out.println(sam.getCartMap());
+
+
+
+
+//        internalOperations.addProductToStore(manager,store,sugar,11);
+//        internalOperations.addProductToStore(manager,store,milk,5);
+//        internalOperations.addProductToStore(manager,store,sugar,11);
+//        internalOperations.addProductToStore(manager,store,garri,12);
+//        System.out.println(store.getProductMap());
+//        customerOperations.buyProduct(sam,store,sugar,1);
+//        customerOperations.buyProduct(sam,store,sugar,21);
+//        customerOperations.buyProduct(sam,store,milk,25);
 //        application.apply(applicant,store);
 //        recruitment.hire(applicant,manager,store);
 
@@ -49,14 +87,21 @@ public class Main {
 
 
 
-//        System.out.println(product);
-        System.out.println(store.getProductMap());
-        System.out.println(customer.getCartMap());
+//        System.out.println(milk);
+//        System.out.println(store.getProductMap());
+//        System.out.println(sam.getCartMap());
 
 //
 //        Applicant applicant = new Applicant("deenn","lawal","aaa","sdhd", Gender.FEMALE, Qualification.BSC, Role.CASHIER);
 //        System.out.println(store.getProductMap());
 //        System.out.println(applicant);
+
+//        if (true) {
+//             System.out.println("true");
+//        }
+//        if (false) {
+//             System.out.println("false");
+//        }
 
     }
 }

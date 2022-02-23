@@ -10,6 +10,7 @@ import java.util.Map;
 
 public interface CustomerOperations {
 
-    Map<Product, Integer> buyProduct(Customer customer, Store store, Product product, int quantityWanted) throws ProductOutOfStockException, ProductNotInStockException;
+   Map<Product,Integer> addProductToCart(Customer customer, Store store, String productName, int quantityWanted) throws ProductOutOfStockException, ProductNotInStockException;
 //    void (Customer customer, Store store);
+void loadCustomerAccount(Customer customer, double amount);
 }

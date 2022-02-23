@@ -5,9 +5,9 @@ public class Account {
     private String accountName;
     private double accountBalance;
 
-    public Account(String accountName, double accountBalance) {
+    public Account(String accountName) {
         this.accountName = accountName;
-        this.accountBalance = accountBalance;
+        this.accountBalance = 0;
     }
 
     public String getAccountName() {

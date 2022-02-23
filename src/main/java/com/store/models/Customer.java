@@ -8,47 +8,52 @@ import java.util.Map;
 
 public class Customer extends Person {
 
-    private double wallet;
-    private int quantityWanted;
-//    private Account account;
+    private Account account;
     private Map<Product,Integer> cartMap;
 
-    public Customer(String firstName, String lastName, String email, String address, Gender gender, double wallet, int quantityWanted) {
+    public Customer(String firstName, String lastName, String email, String address, Gender gender) {
         super(firstName, lastName, email, address, gender);
-        this.wallet = wallet;
-        this.quantityWanted = quantityWanted;
+//        this.wallet = wallet;
         this.cartMap = new HashMap<>();
+        this.account = new Account(this.getFirstName() + " " + this.getLastName());
     }
 
-    public double getWallet() {
-        return wallet;
+    public Account getAccount() {
+        return account;
     }
 
-    public void setWallet(double wallet) {
-        this.wallet = wallet;
+    public void setAccount(Account account) {
+        this.account = account;
     }
 
-    public int getQuantityWanted() {
-        return quantityWanted;
-    }
+    //    public double getWallet() {
+//        return wallet;
+//    }
 
-    public void setQuantityWanted(int quantityWanted) {
-        this.quantityWanted = quantityWanted;
-    }
+//    public void setWallet(double wallet) {
+//        this.wallet = wallet;
+//    }
+
+//    public int getQuantityWanted() {
+//        return quantityWanted;
+//    }
+
+//    public void setQuantityWanted(int quantityWanted) {
+//        this.quantityWanted = quantityWanted;
+//    }
 
     public Map<Product, Integer> getCartMap() {
         return cartMap;
     }
 
-    public void setCartMap(Map<Product, Integer> cartMap) {
+    public void setCartMap(Product product, int quantityWanted) {
         this.cartMap = cartMap;
     }
 
     @Override
     public String toString() {
         return "Customer{" +
-                "wallet=" + wallet +
-                ", quantityWanted=" + quantityWanted +
+                "account=" + account +
                 ", cartMap=" + cartMap +
                 '}';
     }

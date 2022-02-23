@@ -5,36 +5,36 @@ import com.store.exceptions.ProductOutOfStockException;
 import com.store.models.Customer;
 import com.store.models.Product;
 import com.store.models.Store;
+
+import java.util.Arrays;
 import java.util.Map;
+import java.util.Objects;
+
 public class CustomerOperationsImpl implements CustomerOperations{
 
     @Override
-    public Map<Product, Integer> buyProduct(Customer customer, Store store, Product product, int quantityWanted) throws ProductOutOfStockException, ProductNotInStockException {
-         Map<Product, Integer> productMapPlaceHolder = store.getProductMap();
+    public Map<Product, Integer> addProductToCart(Customer customer, Store store, String productName, int quantityWanted) throws ProductOutOfStockException, ProductNotInStockException {
+//        for (Product product : store.getProductList()) { //
+        for (int i=0; i< store.getProductList().length; i++) { //
+            if (store.getProductList()[i].getProductName().equalsIgnoreCase(productName)) {
+                if (store.getProductList()[i].getProductQuantity() > quantityWanted) {
+                    System.out.println("current product --> "+ store.getProductList()[i]);
+                    customer.getCartMap().merge(store.getProductList()[i], quantityWanted, Integer::sum);
 
-             if (productMapPlaceHolder.containsKey(product) && productMapPlaceHolder.get(product) >= quantityWanted) {
-                 if (customer.getCartMap().containsKey(product)) {
-                     int totalQuantityWanted = customer.getCartMap().get(product) + quantityWanted;
-                     if (totalQuantityWanted > productMapPlaceHolder.get(product) ) {
-
-                         throw new ProductOutOfStockException("Sorry, we don't have up to " + quantityWanted + " " + product.getProductName() +" left in stock");
-                     } else {
-                         customer.getCartMap().put(product,totalQuantityWanted);
-
-                     }
-
-                 }else {
-                     customer.getCartMap().put(product,quantityWanted);
-                 }
-
-             } else if (productMapPlaceHolder.containsKey(product) && productMapPlaceHolder.get(product) < quantityWanted) {
-                 throw new ProductOutOfStockException("Sorry, we only have " + productMapPlaceHolder.get(product) + " in stock");
-             } else {
-                 throw new ProductNotInStockException("We don't have "  + product.getProductName());
-             }
-
-         return customer.getCartMap();
+                    break;
+                } else {
+                    throw new ProductNotInStockException("Your request is ssds");
+                }
+//            } else {
+//                throw new ProductOutOfStockException("Out of Stock");
+            }
+        }
+        return customer.getCartMap();
     }
 
-
+    @Override
+    public void loadCustomerAccount(Customer customer, double amount) {
+        double originalBalance = customer.getAccount().getAccountBalance();
+        customer.getAccount().setAccountBalance(originalBalance+amount);
+    }
 }

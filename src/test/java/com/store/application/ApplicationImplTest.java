@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ApplicationImplTest {
-    Store drogoStores = new Store("Drogo","Benin",0.00);
+    Store drogoStores = new Store("Drogo","Benin");
     ApplicationImpl application = new ApplicationImpl();
 
 

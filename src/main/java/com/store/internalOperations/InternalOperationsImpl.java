@@ -1,14 +1,16 @@
 package com.store.internalOperations;
 
-import com.store.enums.Role;
 import com.store.exceptions.InsufficientFundException;
 import com.store.exceptions.StaffNotAuthorizedException;
-import com.store.models.Customer;
-import com.store.models.Staff;
-import com.store.models.Store;
-import com.store.models.Product;
+import com.store.models.*;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -19,89 +21,85 @@ public class InternalOperationsImpl implements InternalOperations{
 
 private double customerPrice = 0;
 
+
     @Override
-    public void addProductToStore(Staff admin, Store store, Product product, int quantityToBeAddedStore) throws StaffNotAuthorizedException {
-
-        if (admin.getRole().equals(MANAGER)) {
-                if (store.getProductMap().containsKey(product)) {
-                  if (store.getProductMap().get(product) >= 1) {
-                      int i = store.getProductMap().get(product) + quantityToBeAddedStore;
-                      store.getProductMap().put(product,i);
-                  }
-                } else {
-                    store.getProductMap().put(product,quantityToBeAddedStore);
-                }
-
-        } else {
-            throw new StaffNotAuthorizedException("You're not authorized to perform this operation");
+    public void addProductToStore(Staff admin, Store store) throws StaffNotAuthorizedException, IOException {
+        if (!admin.getRole().equals(MANAGER)) {
+                throw new StaffNotAuthorizedException("You're not authorized to perform this operation");
         }
+        stockProduct(store);
     }
+
+
+    private void stockProduct(Store store) throws IOException {
+            String path = "src/main/resources/deennStore/Deen_Store .xlsx";
+            FileInputStream inputStream = new FileInputStream(path);
+            XSSFWorkbook workbook = new XSSFWorkbook(inputStream);
+            XSSFSheet xssfSheet = workbook.getSheetAt(0);
+            Product[] productList = new Product[xssfSheet.getPhysicalNumberOfRows()-1];
+
+            for (int i = 1; i <= xssfSheet.getLastRowNum(); i++) {
+                XSSFRow xssfRow = xssfSheet.getRow(i);
+                Category category = new Category(
+                   xssfRow.getCell(2).getStringCellValue());
+                   productList[i-1] = new Product (
+                        xssfRow.getCell(0).getStringCellValue(),
+                        xssfRow.getCell(1).getStringCellValue(),
+                           category,
+                        xssfRow.getCell(3).getNumericCellValue(),
+
+                        (int) xssfRow.getCell(4).getNumericCellValue()
+                );
+            }
+        store.setProductList(productList);
+        }
+
+
+
 
     @Override
     public void sellProducts(Staff staff, Store store, Customer customer) throws InsufficientFundException, StaffNotAuthorizedException {
         Map<Product,Integer> map = customer.getCartMap();
-        double customerWallet =  customer.getWallet();
-        double storeAccount = store.getStoreAccount();
         double totalAmount = 0.00;
+        double customerBalance = customer.getAccount().getAccountBalance();
         double totalAmountPerProduct = 0.00;
         if (!staff.getRole().equals(CASHIER)) {
             throw new StaffNotAuthorizedException(" You're not Authorized to perform this operation");
         } else {
             for (Map.Entry<Product,Integer> entry : map.entrySet()) {
                 double productPrice = entry.getKey().getProductPrice();
-                int newProductQuantity = 0;
                 int  productQuantity = entry.getValue();
-
                 totalAmountPerProduct = productPrice * productQuantity;
-//                System.out.println(customer.getWallet());
-//                System.out.println(customerWallet);
-//                System.out.println(totalAmountPerProduct);
                 totalAmount += totalAmountPerProduct;
                 customerPrice = totalAmount;
-
             }
-
-
         }
-        if (totalAmount > customerWallet) {
+        if (totalAmount > customerBalance) {
             throw  new InsufficientFundException("Insufficient Funds");
-        }
-            else {
+        } else {
 
-                customerWallet -= totalAmount;
-                customer.setWallet(customerWallet);
-                storeAccount += totalAmount;
-                store.setStoreAccount(storeAccount);
-                removeBoughtProducts(customer,store);
+                customerBalance -= totalAmount;
+                customer.getAccount().setAccountBalance(customerBalance);
+                double originalAccountBalance = store.getStoreAccount().getAccountBalance();
+                store.getStoreAccount().setAccountBalance(totalAmount+originalAccountBalance);
+                removeBoughtProducts(customer.getCartMap(),store.getProductList());
                 System.out.println(printReceipt(store,customer,totalAmount));;
         }
         map.clear();
 
     }
 
-    private void removeBoughtProducts(Customer customer,Store store) {
-
-        List<Product> productToRemoveFromStore = new ArrayList<>();
-
-        for (Map.Entry<Product, Integer> productsPairsBoughtByCustomer : customer.getCartMap().entrySet()) {
+    private void removeBoughtProducts(Map<Product,Integer> customerProductMap,Product[] products) {
+        for (Map.Entry<Product, Integer> productsPairsBoughtByCustomer : customerProductMap.entrySet()) {
             String nameOfItem =  productsPairsBoughtByCustomer.getKey().getProductName();
             int itemUnit = productsPairsBoughtByCustomer.getValue();
 
-            for (Map.Entry<Product, Integer> productsPairsInStore : store.getProductMap().entrySet()) {
-                if (productsPairsInStore.getKey().getProductName().equals(nameOfItem)) {
-                    productsPairsInStore.setValue(productsPairsInStore.getValue()-itemUnit);
-                }
-
-                if (productsPairsInStore.getValue() == 0) {
-                    productToRemoveFromStore.add(productsPairsInStore.getKey());
+            for (Product productInStore : products) {
+                if (productInStore.getProductName().equals(nameOfItem)) {
+                   productInStore.setProductQuantity(productInStore.getProductQuantity()-itemUnit);
                 }
             }
         }
-
-        for (Product EachProductAndItsUnit : productToRemoveFromStore) {
-            store.getProductMap().remove(EachProductAndItsUnit);
-        }
-
     }
 
     @Override
@@ -126,10 +124,4 @@ private double customerPrice = 0;
 
 
     }
-
-    public double getCustomerPrice() {
-        return customerPrice;
-    }
-
-
 }
