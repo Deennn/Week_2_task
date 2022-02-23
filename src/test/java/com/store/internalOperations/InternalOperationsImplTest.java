@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -44,14 +45,41 @@ class InternalOperationsImplTest {
     }
 
     @Test
-    void addProductToStore() {
+    void addProductToStore() throws StaffNotAuthorizedException, IOException {
+        internalOperations.addProductToStore(manager,store);
+        Assertions.assertEquals(13,store.getProductList().length);
+    }
+    @Test
+    void addProductToStores() throws StaffNotAuthorizedException, IOException {
+        internalOperations.addProductToStore(manager,store);
+        Assertions.assertEquals(13,store.getProductList().length);
+    }
+    @Test
+    void addProductToStoress() throws StaffNotAuthorizedException, IOException {
+
+        Assertions.assertThrows(StaffNotAuthorizedException.class, ()-> internalOperations.addProductToStore(cashier,store));
     }
 
     @Test
     void sellProducts() {
+        Assertions.assertThrows(StaffNotAuthorizedException.class, ()-> internalOperations.sellProducts(manager,store,customer));
     }
 
     @Test
-    void printReceipt() {
+    void shouldThrowInsufficentFundException() throws StaffNotAuthorizedException, IOException, InsufficientFundException, ProductOutOfStockException, ProductNotInStockException {
+        internalOperations.addProductToStore(manager,store);
+        customerOperations.addProductToCart(customer,store,"Bread",4);
+        customerOperations.loadCustomerAccount(customer,10.0);
+
+        Assertions.assertThrows(InsufficientFundException.class, () -> internalOperations.sellProducts(cashier,store,customer));
+    }
+    @Test
+    void shouldThrowIn() throws StaffNotAuthorizedException, IOException, InsufficientFundException, ProductOutOfStockException, ProductNotInStockException {
+        internalOperations.addProductToStore(manager,store);
+        customerOperations.addProductToCart(customer,store,"Bread",4);
+        customerOperations.loadCustomerAccount(customer,100000000.0);
+        internalOperations.sellProducts(cashier,store,customer);
+
+        Assertions.assertEquals(0,customer.getCartMap().size());
     }
 }
