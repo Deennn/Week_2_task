@@ -6,6 +6,7 @@ import com.store.enums.Role;
 import com.store.exceptions.ApplicantsAlreadyAppliedException;
 import com.store.exceptions.StaffNotAuthorizedException;
 import com.store.models.Applicant;
+import com.store.models.Staff;
 import com.store.models.Store;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -13,7 +14,8 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ApplicationImplTest {
-    Store drogoStores = new Store("Drogo","Benin");
+    Staff manager = new Staff(Role.MANAGER);
+    Store drogoStores = new Store("Drogo","Benin",manager);
     ApplicationImpl application = new ApplicationImpl();
 
 

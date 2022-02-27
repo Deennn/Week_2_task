@@ -19,8 +19,9 @@ import java.util.Objects;
 import static org.junit.jupiter.api.Assertions.*;
 
 class recruitmentImplTest {
-    Store drogoStores = new Store("Drogo","Benin");
     Staff manager = new Staff(Role.MANAGER);
+    Store drogoStores = new Store("Drogo","Benin", manager);
+
     Staff cahsier = new Staff(Role.CASHIER);
     recruitmentImpl recruit  = new recruitmentImpl();
     ApplicationImpl application = new ApplicationImpl();
@@ -32,14 +33,14 @@ class recruitmentImplTest {
         Applicant lawal = new Applicant("Deenn","Lawal","a@gmail.com", "Tech", Gender.FEMALE, Qualification.BSC, Role.CASHIER);
         application.apply(lawal, drogoStores);
         recruit.hire(lawal,manager,drogoStores);
-        assertEquals(1,drogoStores.getStaffs().size());
+        assertEquals(2,drogoStores.getStaffs().size());
     }
     @Test
     void shouldFailIFApplicantIsNotFemale() throws StaffNotAuthorizedException, ApplicantsAlreadyAppliedException, OverStaffedException {
         Applicant lawal = new Applicant("Deenn","Lawal","a@gmail.com", "Tech", Gender.MALE, Qualification.BSC, Role.CASHIER);
         application.apply(lawal, drogoStores);
         recruit.hire(lawal,manager,drogoStores);
-        assertEquals(0,drogoStores.getStaffs().size());
+        assertEquals(1,drogoStores.getStaffs().size());
     }
     @Test
     void shouldIfNot() throws ApplicantsAlreadyAppliedException {
@@ -60,7 +61,7 @@ class recruitmentImplTest {
         application.apply(lawal, drogoStores);
         recruit.hire(lawal,manager,drogoStores);
         recruit. convertApplicantToStaffAndAddToCompany(drogoStores,lawal);
-        assertEquals(drogoStores.getStaffs().get(0).getEmail(), lawal.getEmail());
+        assertEquals(drogoStores.getStaffs().get(1).getEmail(), lawal.getEmail());
     }
 
     @Test

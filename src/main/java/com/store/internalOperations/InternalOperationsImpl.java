@@ -3,15 +3,13 @@ package com.store.internalOperations;
 import com.store.exceptions.InsufficientFundException;
 import com.store.exceptions.StaffNotAuthorizedException;
 import com.store.models.*;
+import com.store.models.Category;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 
 import static com.store.enums.Role.CASHIER;
@@ -32,7 +30,7 @@ private double customerPrice = 0;
 
 
     private void stockProduct(Store store) throws IOException {
-            String path = "src/main/resources/deennStore/Deen_Store .xlsx";
+            java.lang.String path = "src/main/resources/deennStore/Deen_Store .xlsx";
             FileInputStream inputStream = new FileInputStream(path);
             XSSFWorkbook workbook = new XSSFWorkbook(inputStream);
             XSSFSheet xssfSheet = workbook.getSheetAt(0);
@@ -91,7 +89,7 @@ private double customerPrice = 0;
 
     private void removeBoughtProducts(Map<Product,Integer> customerProductMap,Product[] products) {
         for (Map.Entry<Product, Integer> productsPairsBoughtByCustomer : customerProductMap.entrySet()) {
-            String nameOfItem =  productsPairsBoughtByCustomer.getKey().getProductName();
+            java.lang.String nameOfItem =  productsPairsBoughtByCustomer.getKey().getProductName();
             int itemUnit = productsPairsBoughtByCustomer.getValue();
 
             for (Product productInStore : products) {
@@ -103,8 +101,8 @@ private double customerPrice = 0;
     }
 
     @Override
-    public String printReceipt(Store store, Customer customer, double totalAmount) {
-        String receipt = "***** Thanks for patronizing " + store.getName() + " *****\n" +
+    public java.lang.String printReceipt(Store store, Customer customer, double totalAmount) {
+        java.lang.String receipt = "***** Thanks for patronizing " + store.getName() + " *****\n" +
                 "Transaction Details\n" +
                 "*******************************************\n";
 

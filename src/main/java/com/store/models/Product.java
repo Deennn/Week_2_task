@@ -4,13 +4,13 @@ package com.store.models;
 public class Product {
     private static int productIdTracker = 0;
 
-    private String productName, productDescription;
+    private java.lang.String productName, productDescription;
     private Category category;
-    private String productId;
+    private java.lang.String productId;
     private double productPrice;
     private int productQuantity;
 
-    public Product(String productName,String productDescription,Category category, double productPrice,int productQuantity) {
+    public Product(java.lang.String productName, java.lang.String productDescription, Category category, double productPrice, int productQuantity) {
         productIdTracker++;
         this.productName = productName;
         this.productDescription = productDescription;
@@ -26,27 +26,27 @@ public class Product {
 
     }
 
-    public String getProductName() {
+    public java.lang.String getProductName() {
         return productName;
     }
 
-    public void setProductName(String productName) {
+    public void setProductName(java.lang.String productName) {
         this.productName = productName;
     }
 
-    public String getProductDescription() {
+    public java.lang.String getProductDescription() {
         return productDescription;
     }
 
-    public void setProductDescription(String productDescription) {
+    public void setProductDescription(java.lang.String productDescription) {
         this.productDescription = productDescription;
     }
 
-    public String getProductId() {
+    public java.lang.String getProductId() {
         return productId;
     }
 
-    public void setProductId(String productId) {
+    public void setProductId(java.lang.String productId) {
         this.productId = productId;
     }
 
@@ -75,7 +75,7 @@ public class Product {
     }
 
     @Override
-    public String toString() {
+    public java.lang.String toString() {
         return "Product{" +
                 "productName='" + productName + '\'' +
                 ", productDescription='" + productDescription + '\'' +

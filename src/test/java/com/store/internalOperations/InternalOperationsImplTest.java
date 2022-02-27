@@ -8,14 +8,12 @@ import com.store.exceptions.ProductNotInStockException;
 import com.store.exceptions.ProductOutOfStockException;
 import com.store.exceptions.StaffNotAuthorizedException;
 import com.store.models.*;
+import com.store.models.Category;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.util.Map;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class InternalOperationsImplTest {
 
@@ -23,63 +21,85 @@ class InternalOperationsImplTest {
     Category Food;
     Product product;
     Product product1;
-    Staff manager ;
-    Staff cashier;
-    Customer customer;
+    Staff ade;
+    Staff chisom;
+    Customer deenn;
 
     InternalOperations internalOperations;
     CustomerOperationsImpl customerOperations = new CustomerOperationsImpl();
 
     @BeforeEach
     void setUp() {
-        store = new Store("DrogoStore","Tech_Park");
+        store = new Store("DrogoStore","Tech_Park",chisom);
         Food = new Category("Food");
 
-        manager = new Staff(Role.MANAGER);
-        cashier = new Staff(Role.CASHIER);
+        ade = new Staff(Role.MANAGER);
+        chisom = new Staff(Role.CASHIER);
         internalOperations = new InternalOperationsImpl();
 
-        customer = new Customer("Deenn","lawal","a@gmail.com","edo", Gender.MALE);
+        deenn = new Customer("Deenn","lawal","a@gmail.com","edo", Gender.MALE);
 
 
     }
 
     @Test
-    void addProductToStore() throws StaffNotAuthorizedException, IOException {
-        internalOperations.addProductToStore(manager,store);
+    void shouldCheckNumberOfProductsAddedToStore() throws StaffNotAuthorizedException, IOException {
+        internalOperations.addProductToStore(ade,store);
         Assertions.assertEquals(13,store.getProductList().length);
     }
+
     @Test
-    void addProductToStores() throws StaffNotAuthorizedException, IOException {
-        internalOperations.addProductToStore(manager,store);
-        Assertions.assertEquals(13,store.getProductList().length);
+    void shouldCheckIfTheProductsInStoreAreWhatWasAdded() throws StaffNotAuthorizedException, IOException {
+        internalOperations.addProductToStore(ade,store);
+        Assertions.assertTrue(store.getProductList()[7].getProductName().equalsIgnoreCase("juice"));
+        Assertions.assertEquals(10,store.getProductList()[0].getProductQuantity());
     }
     @Test
-    void addProductToStoress() throws StaffNotAuthorizedException, IOException {
+    void shouldCheckWhoseAddingProductToStore() throws StaffNotAuthorizedException, IOException {
 
-        Assertions.assertThrows(StaffNotAuthorizedException.class, ()-> internalOperations.addProductToStore(cashier,store));
+        Assertions.assertThrows(StaffNotAuthorizedException.class, ()-> internalOperations.addProductToStore(chisom,store));
     }
 
     @Test
     void sellProducts() {
-        Assertions.assertThrows(StaffNotAuthorizedException.class, ()-> internalOperations.sellProducts(manager,store,customer));
+        Assertions.assertThrows(StaffNotAuthorizedException.class, ()-> internalOperations.sellProducts(ade,store, deenn));
     }
 
     @Test
-    void shouldThrowInsufficentFundException() throws StaffNotAuthorizedException, IOException, InsufficientFundException, ProductOutOfStockException, ProductNotInStockException {
-        internalOperations.addProductToStore(manager,store);
-        customerOperations.addProductToCart(customer,store,"Bread",4);
-        customerOperations.loadCustomerAccount(customer,10.0);
-
-        Assertions.assertThrows(InsufficientFundException.class, () -> internalOperations.sellProducts(cashier,store,customer));
+    void shouldThrowInsufficientFundException() throws StaffNotAuthorizedException, IOException, InsufficientFundException, ProductOutOfStockException, ProductNotInStockException {
+        internalOperations.addProductToStore(ade,store);
+        customerOperations.addProductToCart(deenn,store,"Bread",4);
+        customerOperations.loadCustomerAccount(deenn,10.0);
+        Assertions.assertEquals(10.00, deenn.getAccount().getAccountBalance());
+        Assertions.assertThrows(InsufficientFundException.class, () -> internalOperations.sellProducts(chisom,store, deenn));
     }
     @Test
-    void shouldThrowIn() throws StaffNotAuthorizedException, IOException, InsufficientFundException, ProductOutOfStockException, ProductNotInStockException {
-        internalOperations.addProductToStore(manager,store);
-        customerOperations.addProductToCart(customer,store,"Bread",4);
-        customerOperations.loadCustomerAccount(customer,100000000.0);
-        internalOperations.sellProducts(cashier,store,customer);
+    void shouldCheckIfCustomerCartIsEmptyAfterBuying() throws StaffNotAuthorizedException, IOException, InsufficientFundException, ProductOutOfStockException, ProductNotInStockException {
+        internalOperations.addProductToStore(ade,store);
+        customerOperations.addProductToCart(deenn,store,"Bread",4);
+        customerOperations.loadCustomerAccount(deenn,100000000.0);
+        internalOperations.sellProducts(chisom,store, deenn);
 
-        Assertions.assertEquals(0,customer.getCartMap().size());
+        Assertions.assertEquals(0, deenn.getCartMap().size());
+    }
+    @Test
+    void shouldCheckIfCustomerWalletAfterBuying() throws StaffNotAuthorizedException, IOException, InsufficientFundException, ProductOutOfStockException, ProductNotInStockException {
+        internalOperations.addProductToStore(ade,store);
+        customerOperations.addProductToCart(deenn,store,"Bread",4);
+        customerOperations.loadCustomerAccount(deenn,100000000.0);
+        double balanceBeforeBuying = deenn.getAccount().getAccountBalance();
+        internalOperations.sellProducts(chisom,store, deenn);
+
+        Assertions.assertTrue(balanceBeforeBuying > deenn.getAccount().getAccountBalance());
+    }
+    @Test
+    void shouldCheckIfStore() throws StaffNotAuthorizedException, IOException, InsufficientFundException, ProductOutOfStockException, ProductNotInStockException {
+        internalOperations.addProductToStore(ade,store);
+        customerOperations.addProductToCart(deenn,store,"Bread",4);
+        customerOperations.loadCustomerAccount(deenn,100000000.0);
+        double balanceBeforeBuying = deenn.getAccount().getAccountBalance();
+        internalOperations.sellProducts(chisom,store, deenn);
+
+        Assertions.assertTrue(balanceBeforeBuying > deenn.getAccount().getAccountBalance());
     }
 }

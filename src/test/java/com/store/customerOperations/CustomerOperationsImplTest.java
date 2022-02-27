@@ -8,10 +8,7 @@ import com.store.exceptions.ProductOutOfStockException;
 import com.store.exceptions.StaffNotAuthorizedException;
 import com.store.internalOperations.InternalOperations;
 import com.store.internalOperations.InternalOperationsImpl;
-import com.store.models.Applicant;
-import com.store.models.Customer;
-import com.store.models.Staff;
-import com.store.models.Store;
+import com.store.models.*;
 import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -24,10 +21,11 @@ class CustomerOperationsImplTest {
 //    Product product = new Product("Milk", "powder milk",FoodStuff,1000);
 //    Product product1 = new Product("Sugar","cube sugar",FoodStuff,10000);
 //    Product product2 = new Product("Garri","Ijebu garri", FoodStuff,2000);
+    Staff manager = new Staff(Role.MANAGER);
     Applicant applicant = new Applicant("deee","sss","jdjd","dskdk", Gender.FEMALE, Qualification.BSC, Role.CASHIER);
     Customer customer = new Customer("Deenn","lawal","a@gmail.com","edo",Gender.MALE);
-    Store store = new Store("drogo","tech park");
-    Staff manager = new Staff(Role.MANAGER);
+    Store store = new Store("drogo","tech park", manager);
+
     Staff cashier = new Staff(Role.CASHIER);
 
     InternalOperations internalOperations = new InternalOperationsImpl();
@@ -35,7 +33,7 @@ class CustomerOperationsImplTest {
     @Test
     void shouldCheckTheQuantityOfProductInStore() throws StaffNotAuthorizedException, IOException {
         internalOperations.addProductToStore(manager,store);
-        Assert.assertThrows(ProductNotInStockException.class, ()-> customerOperations.addProductToCart(customer,store,"Garri",15));
+        Assert.assertThrows(ProductOutOfStockException.class, ()-> customerOperations.addProductToCart(customer,store,"Garri",15));
     }
 
     @Test
@@ -49,5 +47,12 @@ class CustomerOperationsImplTest {
     void loadCustomerAccount() {
         customerOperations.loadCustomerAccount(customer,100.0);
         Assertions.assertEquals(100,customer.getAccount().getAccountBalance(),0.00);
+    }
+
+    @Test
+    void viewProductByCategory() throws ProductNotInStockException {
+        Category category = new Category("canned");
+        customerOperations.viewProductByCategory(customer,store,category.getCategoryName());
+        Assertions.assertEquals(2,2);
     }
 }

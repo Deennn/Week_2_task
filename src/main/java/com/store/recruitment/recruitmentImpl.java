@@ -23,7 +23,7 @@ public class recruitmentImpl implements Recruitment{
     @Override
     public void hire(Applicant applicant, Staff staff, Store store) throws StaffNotAuthorizedException, OverStaffedException {
         if (staff.getRole().equals(MANAGER)) {
-            if (store.getStaffs().size() < 1 ) {
+            if (store.getStaffs().size() <= 1 ) {
                 if (store.getApplicants().contains(applicant)) {
                     if (applicant.getPositionAppliedTo().equals(CASHIER)
                             && applicant.getGender().equals(FEMALE)

@@ -1,26 +1,26 @@
 package com.store.models;
 
 public class Category {
-    private String CategoryName;
+    private java.lang.String CategoryName;
 
 
-    public Category(String categoryName) {
+    public Category(java.lang.String categoryName) {
         CategoryName = categoryName;
 
     }
 
-    public String getCategoryName() {
+    public java.lang.String getCategoryName() {
         return CategoryName;
     }
 
-    public void setCategoryName(String categoryName) {
+    public void setCategoryName(java.lang.String categoryName) {
         CategoryName = categoryName;
     }
 
 
 
     @Override
-    public String toString() {
+    public java.lang.String toString() {
         return "Category{" +
                 "CategoryName='" + CategoryName + '\'' +
                 '}';

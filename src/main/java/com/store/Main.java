@@ -11,6 +11,7 @@ import com.store.exceptions.*;
 import com.store.internalOperations.InternalOperations;
 import com.store.internalOperations.InternalOperationsImpl;
 import com.store.models.*;
+import com.store.models.Category;
 import com.store.recruitment.Recruitment;
 import com.store.recruitment.recruitmentImpl;
 
@@ -19,7 +20,7 @@ import java.util.Arrays;
 
 public class Main {
 
-   public static void main(String[] args) throws StaffNotAuthorizedException, ApplicantsAlreadyAppliedException, OverStaffedException, InsufficientFundException, ProductOutOfStockException, ProductNotInStockException, IOException {
+   public static void main(java.lang.String[] args) throws StaffNotAuthorizedException, ApplicantsAlreadyAppliedException, OverStaffedException, InsufficientFundException, ProductOutOfStockException, ProductNotInStockException, IOException {
         Category FoodStuff = new Category("FoodStuff");
 //        Product milk = new Product("Milk", "powder milk",FoodStuff,1000,10);
 //        Product sugar = new Product("Sugar","cube sugar",FoodStuff,10000,14);
@@ -27,12 +28,14 @@ public class Main {
         Applicant applicant = new Applicant("deee","sss","jdjd","dskdk",Gender.FEMALE,Qualification.BSC,Role.CASHIER);
         Customer sam= new Customer("Sam","Lawal","ade@gmail.com","Edo Park",Gender.MALE);
 //        Customer sam = new Customer("Sam","lawal","a@gmail.com","edo",Gender.MALE,20000.0,3);
-        Store store = new Store("drogo","tech park");
+
         Staff manager = new Staff(Role.MANAGER);
         Staff cashier = new Staff(Role.CASHIER);
+        Store store = new Store("drogo","tech park",manager);
 
         InternalOperations internalOperations = new InternalOperationsImpl();
         CustomerOperations customerOperations = new CustomerOperationsImpl();
+
         Application application = new ApplicationImpl();
         Recruitment recruitment = new recruitmentImpl();
 
@@ -41,23 +44,30 @@ public class Main {
         System.out.println(store.getApplicants().size());
         System.out.println(store.getStaffs().size());
 
+
         Staff deee = store.getStaffs().get(0);
         System.out.println(deee.getFirstName());
+        Category category  = new Category("Food/Beverages");
 
         internalOperations.addProductToStore(manager,store);
         System.out.println(Arrays.toString(store.getProductList()));
+        System.out.println("Food/ Beverages category");
+        customerOperations.viewProductByCategory(sam,store,"canned");
+
+
 //        customerOperations.buyProduct(sam,store,"garr",5);
         customerOperations.loadCustomerAccount(sam,100000000);
         customerOperations.addProductToCart(sam,store,"Bread",4);
-        customerOperations.addProductToCart(sam,store,"Garri",4);
-        customerOperations.addProductToCart(sam,store,"Garri",4);
-        customerOperations.addProductToCart(sam,store,"garri",10);
+        customerOperations.addProductToCart(sam,store,"Garri",14);
+//        customerOperations.addProductToCart(sam,store,"Garri",4);
+//        customerOperations.addProductToCart(sam,store,"garri",10);
         customerOperations.addProductToCart(sam,store,"milk",12);
         System.out.println("sam's cart --> " +sam.getCartMap());
         internalOperations.sellProducts(cashier,store,sam);
         System.out.println();
 //        System.out.println(Arrays.toString(store.getProductList()));
         System.out.println("sam's cart --> " +sam.getCartMap());
+        System.out.println(store.getStaffs().size());
 //        System.out.println(store.getProductMap());
 
 //        customerOperations.buyProduct(sam,store,milk,12);

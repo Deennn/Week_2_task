@@ -13,13 +13,14 @@ public class Store {
     private List<Applicant> applicants;
     private Product[] productList = new Product[1];
 
-    public Store(String name, String address) {
+    public Store(String name, String address , Staff manager) {
         this.name = name;
         this.address = address;
 //        this.storeAccount = new ;
         this.storeAccount = new Account(this.name);
         this.staffs = new ArrayList<>();
         this.applicants = new ArrayList<>();
+        staffs.add(manager);
 //        this.productList = new Product[0];
     }
 
