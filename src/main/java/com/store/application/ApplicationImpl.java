@@ -16,5 +16,6 @@ public class ApplicationImpl implements Application{
             System.out.println(applicant.getFirstName() + " has successfully applied for the role of "
                     + applicant.getPositionAppliedTo() + " at " + store.getName());
         }
+// I would love to see if this work....
     }
 }
